@@ -17,6 +17,7 @@ import {
   FileCheck,
   Archive,
   BookOpen,
+  Workflow,
 } from 'lucide-react';
 
 export function Sidebar() {
@@ -69,6 +70,15 @@ export function Sidebar() {
           </div>
 
           <nav className="space-y-1">
+            <SidebarItem
+              collapsed={collapsed}
+              active={currentScreen === 'workflow-dashboard'}
+              onClick={() => navigateToScreen('workflow-dashboard')}
+              icon={<Workflow className="w-4 h-4 text-blue-400" />}
+              label="Engagement Workflow"
+              badge="7-Phase"
+              badgeColor="text-blue-400"
+            />
             <SidebarItem
               collapsed={collapsed}
               active={currentScreen === 'phase-1'}
@@ -164,6 +174,15 @@ export function Sidebar() {
               icon={<Clock className="w-4 h-4 text-blue-400" />}
               label="Practice & Timesheets"
               badge="Mod 5"
+            />
+            <SidebarItem
+              collapsed={collapsed}
+              active={currentScreen === 'practice-templates'}
+              onClick={() => navigateToScreen('practice-templates')}
+              icon={<Layers className="w-4 h-4 text-indigo-400" />}
+              label="Practice Templates"
+              badge="v6.4"
+              badgeColor="text-indigo-300"
             />
             <SidebarItem
               collapsed={collapsed}

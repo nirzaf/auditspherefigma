@@ -15,6 +15,8 @@ import { Screen07Archive } from '@/components/screens/Screen07Archive';
 import { Screen08ClientPortal } from '@/components/screens/Screen08ClientPortal';
 import { Screen09PracticeLedger } from '@/components/screens/Screen09PracticeLedger';
 import { ScreenArchitectureMap } from '@/components/screens/ScreenArchitectureMap';
+import { ScreenWorkflowDashboard } from '@/components/screens/ScreenWorkflowDashboard';
+import { ScreenPracticeTemplates } from '@/components/screens/ScreenPracticeTemplates';
 
 import { ReceiptVoucherModal } from '@/components/modals/ReceiptVoucherModal';
 import { HoldingLetterModal } from '@/components/modals/HoldingLetterModal';
@@ -67,6 +69,8 @@ function AuditSphereWorkspace() {
               {currentScreen === 'phase-7' && <Screen07Archive />}
               {currentScreen === 'client-portal' && <Screen08ClientPortal />}
               {currentScreen === 'practice-ledger' && <Screen09PracticeLedger />}
+              {currentScreen === 'workflow-dashboard' && <ScreenWorkflowDashboard />}
+              {currentScreen === 'practice-templates' && <ScreenPracticeTemplates />}
               {currentScreen === 'system-blueprint' && <ScreenArchitectureMap />}
             </>
           )}

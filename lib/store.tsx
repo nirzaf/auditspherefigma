@@ -16,6 +16,12 @@ import {
   SamplingResult,
   ToastNotification,
   ToastType,
+  WorkflowTask,
+  WorkflowTaskStatus,
+  PracticeTemplate,
+  AutomationRule,
+  RecurringEngagementPlan,
+  ScreenWorkbench,
 } from '@/types/audit';
 import {
   INITIAL_ENGAGEMENTS,
@@ -23,6 +29,47 @@ import {
   INITIAL_JOURNAL_ENTRIES,
   INITIAL_AR_AGING,
 } from '@/lib/mock-data';
+import {
+  PRACTICE_TEMPLATES,
+  INITIAL_WORKFLOW_TASKS,
+  AUTOMATION_RULES,
+  INITIAL_RECURRING_PLANS,
+} from '@/lib/workflow-data';
+
+// Default owner names / avatars used when instantiating template task instances.
+function defaultOwnerForRole(role: WorkflowTask['ownerRole']): string {
+  switch (role) {
+    case 'Partner':
+      return 'Tariq Al-Mansoor, FCA';
+    case 'Manager':
+      return 'Rashid Kamal, ACCA';
+    case 'Senior':
+      return 'Sarah Ahmed, CPA';
+    case 'Associate':
+      return 'Zaid Al-Kuwari';
+    case 'Client':
+      return 'Sheikh Nasser Al-Thani';
+    default:
+      return 'Unassigned';
+  }
+}
+
+function defaultAvatarForRole(role: WorkflowTask['ownerRole']): string {
+  switch (role) {
+    case 'Partner':
+      return 'TM';
+    case 'Manager':
+      return 'RK';
+    case 'Senior':
+      return 'SA';
+    case 'Associate':
+      return 'ZA';
+    case 'Client':
+      return 'NT';
+    default:
+      return 'UA';
+  }
+}
 
 export type ScreenView =
   | 'phase-1'
@@ -34,7 +81,9 @@ export type ScreenView =
   | 'phase-7'
   | 'client-portal'
   | 'practice-ledger'
-  | 'system-blueprint';
+  | 'system-blueprint'
+  | 'workflow-dashboard'
+  | 'practice-templates';
 
 interface AuditStoreContextType {
   engagements: Engagement[];
@@ -110,6 +159,19 @@ interface AuditStoreContextType {
   closeTimesheetModal: () => void;
   addTimesheetEntry: (entry: Omit<TimesheetEntry, 'id'>) => void;
   resetAllData: () => void;
+  // --- Section 6 — Seven-Phase Workflow Experience Layer ---
+  workflowTasks: WorkflowTask[];
+  practiceTemplates: PracticeTemplate[];
+  automationRules: AutomationRule[];
+  recurringPlans: RecurringEngagementPlan[];
+  activeWorkflowPhase: AuditPhaseId | 'all';
+  setActiveWorkflowPhase: (phase: AuditPhaseId | 'all') => void;
+  updateWorkflowTaskStatus: (taskId: string, status: WorkflowTaskStatus) => void;
+  instantiateTemplate: (templateId: string, engagementId: string) => void;
+  pinTemplateToEngagement: (templateId: string, engagementId: string) => void;
+  toggleAutomationRule: (ruleId: string) => void;
+  advanceRecurringPlan: (planId: string) => void;
+  navigateToWorkbench: (workbench: ScreenWorkbench) => void;
 }
 
 const AuditStoreContext = createContext<AuditStoreContextType | null>(null);
@@ -120,7 +182,7 @@ export function AuditStoreProvider({ children }: { children: React.ReactNode }) 
   // Financial practice data
   const [engagements, setEngagements] = useState<Engagement[]>(INITIAL_ENGAGEMENTS);
   const [currentEngagementId, setCurrentEngagementId] = useState<string>('doha-retail-qpsc');
-  const [currentScreen, setCurrentScreen] = useState<ScreenView>('phase-3');
+  const [currentScreen, setCurrentScreen] = useState<ScreenView>('workflow-dashboard');
   const [userRole, setUserRole] = useState<AuditRole>('REVIEWER');
   const [selectedFSLIId, setSelectedFSLIId] = useState<string | null>('fsli-1');
   const [activeDrawer, setActiveDrawer] = useState<'none' | 'workprogram' | 'analytical'>('none');
@@ -137,6 +199,13 @@ export function AuditStoreProvider({ children }: { children: React.ReactNode }) 
   const [timesheets, setTimesheets] = useState<TimesheetEntry[]>(INITIAL_TIMESHEETS);
   const [journalEntries, setJournalEntries] = useState<JournalEntry[]>(INITIAL_JOURNAL_ENTRIES);
   const [arAging, setArAging] = useState<ARAgingItem[]>(INITIAL_AR_AGING);
+
+  // Section 6 — Workflow Experience Layer state
+  const [workflowTasks, setWorkflowTasks] = useState<WorkflowTask[]>(INITIAL_WORKFLOW_TASKS);
+  const [practiceTemplates, setPracticeTemplates] = useState<PracticeTemplate[]>(PRACTICE_TEMPLATES);
+  const [automationRules, setAutomationRules] = useState<AutomationRule[]>(AUTOMATION_RULES);
+  const [recurringPlans, setRecurringPlans] = useState<RecurringEngagementPlan[]>(INITIAL_RECURRING_PLANS);
+  const [activeWorkflowPhase, setActiveWorkflowPhase] = useState<AuditPhaseId | 'all'>('all');
 
   // Sync & Loading State
   const [isLoading, setIsLoading] = useState(true);
@@ -853,13 +922,147 @@ export function AuditStoreProvider({ children }: { children: React.ReactNode }) 
     }
     setEngagements(INITIAL_ENGAGEMENTS);
     setCurrentEngagementId('doha-retail-qpsc');
-    setCurrentScreen('phase-3');
+    setCurrentScreen('workflow-dashboard');
     setTimesheets(INITIAL_TIMESHEETS);
     setJournalEntries(INITIAL_JOURNAL_ENTRIES);
     setArAging(INITIAL_AR_AGING);
+    setWorkflowTasks(INITIAL_WORKFLOW_TASKS);
+    setPracticeTemplates(PRACTICE_TEMPLATES);
+    setAutomationRules(AUTOMATION_RULES);
+    setRecurringPlans(INITIAL_RECURRING_PLANS);
+    setActiveWorkflowPhase('all');
     addToast(
       'Workspace Reset',
       'All engagement data, schedules & timesheets restored to demo baseline.',
+      'info'
+    );
+  };
+
+  // --- Section 6 — Workflow Experience Layer actions ---
+
+  // Contextual deep link: route a workflow task's workbench link to a module screen.
+  const navigateToWorkbench = (workbench: ScreenWorkbench) => {
+    const map: Record<ScreenWorkbench, ScreenView> = {
+      onboarding: 'phase-1',
+      planning: 'phase-2',
+      fieldwork: 'phase-3',
+      review: 'phase-4',
+      signoff: 'phase-5',
+      deliverables: 'phase-6',
+      archive: 'phase-7',
+      'client-portal': 'client-portal',
+      'practice-ledger': 'practice-ledger',
+    };
+    navigateToScreen(map[workbench]);
+  };
+
+  // Update a projected task status. This NEVER sets a lifecycle stage or forges
+  // an approval — mandatory gates remain governed by authoritative domain commands.
+  const updateWorkflowTaskStatus = (taskId: string, status: WorkflowTaskStatus) => {
+    setWorkflowTasks((prev) =>
+      prev.map((t) =>
+        t.id === taskId
+          ? {
+              ...t,
+              status,
+              completedAt:
+                status === 'completed' ? new Date().toLocaleString() : undefined,
+            }
+          : t
+      )
+    );
+    const task = workflowTasks.find((t) => t.id === taskId);
+    if (status === 'completed') {
+      addToast(
+        task?.isGate ? 'Task Complete (gate still requires authorized sign-off)' : 'Task Completed',
+        task
+          ? task.isGate
+            ? `"${task.title}" checklist done. The authoritative gate "${task.gateLabel}" must still be cleared by the responsible actor.`
+            : `"${task.title}" marked complete.`
+          : 'Task marked complete.',
+        task?.isGate ? 'warning' : 'success'
+      );
+    }
+  };
+
+  // Instantiate a pinned set of task instances for an engagement from a template
+  // revision. Existing instances for that engagement are replaced; template edits
+  // never silently rewrite prior engagements because each instance pins its rev.
+  const instantiateTemplate = (templateId: string, engagementId: string) => {
+    const template = practiceTemplates.find((t) => t.id === templateId);
+    if (!template) return;
+
+    const instances: WorkflowTask[] = [];
+    template.groups.forEach((group) => {
+      group.tasks.forEach((item) => {
+        instances.push({
+          id: `${engagementId}-${item.id}`,
+          engagementId,
+          phase: group.phase,
+          group: group.name,
+          title: item.title,
+          owner: defaultOwnerForRole(item.ownerRole),
+          ownerRole: item.ownerRole,
+          ownerAvatar: defaultAvatarForRole(item.ownerRole),
+          dueDate: '2027-01-15',
+          effortHours: item.effortHours,
+          status: 'not-started',
+          isGate: item.isGate,
+          gateLabel: item.gateLabel,
+          dependsOn: item.dependsOnGroupTaskIds.map((dep) => `${engagementId}-${dep}`),
+          clientRequest: item.clientRequest,
+          linksToWorkbench: item.linksToWorkbench,
+          sourceTemplateId: template.id,
+          pinnedTemplateRev: template.revision,
+        });
+      });
+    });
+
+    setWorkflowTasks((prev) => [
+      ...prev.filter((t) => t.engagementId !== engagementId),
+      ...instances,
+    ]);
+    pinTemplateToEngagement(templateId, engagementId);
+    addToast(
+      'Template Instantiated',
+      `${instances.length} tasks pinned from ${template.name} (${template.revision}) to ${engagementId}. Mandatory domain gates remain enforced.`,
+      'success'
+    );
+  };
+
+  const pinTemplateToEngagement = (templateId: string, engagementId: string) => {
+    setPracticeTemplates((prev) =>
+      prev.map((t) =>
+        t.id === templateId && !t.pinnedToEngagementIds.includes(engagementId)
+          ? { ...t, pinnedToEngagementIds: [...t.pinnedToEngagementIds, engagementId] }
+          : t
+      )
+    );
+  };
+
+  const toggleAutomationRule = (ruleId: string) => {
+    setAutomationRules((prev) =>
+      prev.map((r) => (r.id === ruleId ? { ...r, enabled: !r.enabled } : r))
+    );
+  };
+
+  const advanceRecurringPlan = (planId: string) => {
+    setRecurringPlans((prev) =>
+      prev.map((p) =>
+        p.id === planId
+          ? {
+              ...p,
+              status: p.status === 'draft' ? 'ready' : 'created',
+            }
+          : p
+      )
+    );
+    const plan = recurringPlans.find((p) => p.id === planId);
+    addToast(
+      'Recurring Engagement Advanced',
+      plan
+        ? `Next-year engagement for ${plan.clientLegalName} (${plan.nextPeriod}) is ${plan.status === 'draft' ? 'ready for fresh authorization' : 'created'}. Prior-year sign-offs were NOT carried forward.`
+        : 'Recurring engagement advanced.',
       'info'
     );
   };
@@ -926,6 +1129,18 @@ export function AuditStoreProvider({ children }: { children: React.ReactNode }) 
         closeTimesheetModal,
         addTimesheetEntry,
         resetAllData,
+        workflowTasks,
+        practiceTemplates,
+        automationRules,
+        recurringPlans,
+        activeWorkflowPhase,
+        setActiveWorkflowPhase,
+        updateWorkflowTaskStatus,
+        instantiateTemplate,
+        pinTemplateToEngagement,
+        toggleAutomationRule,
+        advanceRecurringPlan,
+        navigateToWorkbench,
       }}
     >
       {children}

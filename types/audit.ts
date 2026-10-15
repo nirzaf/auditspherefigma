@@ -232,6 +232,154 @@ export interface Engagement {
 
 export type ToastType = 'success' | 'info' | 'warning' | 'error';
 
+// ---------------------------------------------------------------------------
+// Section 6 — Seven-Phase Engagement Workflow Experience Layer
+// The display phases below are a *presentation projection* of the authoritative
+// Section 5 canonical lifecycle. They never replace domain gates or commands.
+// ---------------------------------------------------------------------------
+
+export type WorkflowTaskStatus =
+  | 'not-started'
+  | 'in-progress'
+  | 'waiting-client'
+  | 'under-review'
+  | 'rework'
+  | 'completed';
+
+export type TaskOwnerRole = 'Partner' | 'Manager' | 'Senior' | 'Associate' | 'Client';
+
+// A pinned, engagement-scoped task instance generated from a versioned template.
+// `isGate === true` marks a task that mirrors a mandatory regulatory clearance;
+// completing the task is distinct from satisfying the authoritative gate.
+export interface WorkflowTask {
+  id: string;
+  engagementId: string;
+  phase: AuditPhaseId;
+  group: string; // task group name, e.g. "Dual-Key Acceptance"
+  title: string;
+  owner: string;
+  ownerRole: TaskOwnerRole;
+  ownerAvatar: string;
+  dueDate: string; // ISO date (YYYY-MM-DD)
+  effortHours: number;
+  status: WorkflowTaskStatus;
+  isGate: boolean;
+  gateLabel?: string; // e.g. "Dual-Key Acceptance (ISA 220)"
+  dependsOn: string[]; // ids of prerequisite tasks (cycle-guarded)
+  clientRequest: boolean; // originates from a client PBC request
+  linksToWorkbench?: ScreenWorkbench; // contextual deep link to a module workbench
+  sourceTemplateId: string;
+  pinnedTemplateRev: string;
+  completedAt?: string;
+}
+
+export type ScreenWorkbench =
+  | 'onboarding'
+  | 'planning'
+  | 'fieldwork'
+  | 'review'
+  | 'signoff'
+  | 'deliverables'
+  | 'archive'
+  | 'client-portal'
+  | 'practice-ledger';
+
+// ---------------------------------------------------------------------------
+// Reusable, administrator-approved versioned practice templates (Section 6.4)
+// ---------------------------------------------------------------------------
+
+export interface TaskTemplateItem {
+  id: string;
+  title: string;
+  ownerRole: TaskOwnerRole;
+  dueOffsetDays: number; // relative to engagement fieldwork start
+  effortHours: number;
+  dependsOnGroupTaskIds: string[];
+  clientRequest: boolean;
+  isGate: boolean;
+  gateLabel?: string;
+  linksToWorkbench?: ScreenWorkbench;
+}
+
+export interface TaskTemplateGroup {
+  id: string;
+  name: string;
+  phase: AuditPhaseId;
+  tasks: TaskTemplateItem[];
+}
+
+export interface PracticeTemplate {
+  id: string;
+  name: string;
+  engagementType: 'Statutory Audit' | 'Internal Audit / AUP';
+  industry: string;
+  revision: string; // e.g. "TPL-REV-2026.1"
+  status: 'Approved' | 'Draft';
+  approvedBy?: string;
+  approvedAt?: string;
+  createdAt: string;
+  groups: TaskTemplateGroup[];
+  pinnedToEngagementIds: string[]; // engagements that have pinned this revision
+}
+
+// ---------------------------------------------------------------------------
+// Safe workflow automation (Section 6.6) — permitted orchestrator actions only
+// ---------------------------------------------------------------------------
+
+export type AutomationCategory =
+  | 'assignment'
+  | 'follow-up'
+  | 'reminder'
+  | 'escalation'
+  | 'notification';
+
+export interface AutomationRule {
+  id: string;
+  name: string;
+  category: AutomationCategory;
+  description: string;
+  trigger: string;
+  idempotencyStrategy: string;
+  pinsCurrentVersion: boolean;
+  enabled: boolean;
+}
+
+// Prohibited actions — the automation orchestrator may NEVER perform these; they
+// remain the exclusive authority of authorized domain commands & actors.
+export interface ProhibitedAction {
+  id: string;
+  action: string;
+  reason: string;
+  authority: string;
+}
+
+// ---------------------------------------------------------------------------
+// Recurring audit engagements (Section 6.5)
+// ---------------------------------------------------------------------------
+
+export interface RecurringEngagementPlan {
+  id: string;
+  clientLegalName: string;
+  baseEngagementId: string;
+  nextPeriod: string;
+  templateId: string;
+  templateRev: string;
+  reused: {
+    clientDetails: boolean;
+    team: boolean;
+    mappingSuggestions: boolean;
+  };
+  // These always require fresh, current authorization and are never carried
+  // forward from the prior year as valid authorization.
+  requiresFreshAuthorization: {
+    commercialConsent: boolean;
+    partnerContinuance: boolean;
+    currentTrialBalance: boolean;
+    materialityRecalc: boolean;
+  };
+  status: 'draft' | 'ready' | 'created';
+}
+
 export interface ToastNotification {
   id: string;
   title: string;
