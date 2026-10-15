@@ -158,55 +158,85 @@ export function Screen02Planning() {
           </div>
 
           <div className="space-y-2 text-xs">
-            <div className="p-2 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between">
+            <button
+              onClick={() => navigateToScreen('phase-1')}
+              className="w-full p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg flex items-center justify-between text-left transition-colors cursor-pointer group"
+              title="Navigate to Phase 1: Administration & Planning"
+            >
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                <span className="font-medium text-slate-800">01_Administration & Planning</span>
+                <span className="font-medium text-slate-800 group-hover:text-blue-700 transition-colors">
+                  01_Administration & Planning
+                </span>
               </div>
-              <span className="text-[10px] font-mono text-emerald-700 bg-emerald-100/70 px-1.5 py-0.5 rounded">
-                Ready (4 docs)
+              <span className="text-[10px] font-mono text-emerald-700 bg-emerald-100/70 px-1.5 py-0.5 rounded font-semibold">
+                Ready (4 docs) →
               </span>
-            </div>
+            </button>
 
-            <div className="p-2 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between">
+            <button
+              onClick={() => navigateToScreen('phase-2')}
+              className="w-full p-2.5 bg-blue-50/50 hover:bg-blue-50 border border-blue-200 rounded-lg flex items-center justify-between text-left transition-colors cursor-pointer group"
+              title="Active in Phase 2: Trial Balance & Schedules"
+            >
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                <span className="font-medium text-slate-800">02_Trial Balance & Schedules</span>
+                <CheckCircle2 className="w-3.5 h-3.5 text-blue-600" />
+                <span className="font-medium text-slate-800 group-hover:text-blue-700 transition-colors">
+                  02_Trial Balance & Schedules
+                </span>
               </div>
-              <span className="text-[10px] font-mono text-blue-700 bg-blue-100/70 px-1.5 py-0.5 rounded">
-                Ingested (12 docs)
+              <span className="text-[10px] font-mono text-blue-700 bg-blue-100/70 px-1.5 py-0.5 rounded font-semibold">
+                Ingested (12 docs) →
               </span>
-            </div>
+            </button>
 
-            <div className="p-2 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between">
+            <button
+              onClick={() => navigateToScreen('phase-3')}
+              className="w-full p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg flex items-center justify-between text-left transition-colors cursor-pointer group"
+              title="Navigate to Phase 3: Fieldwork & Testing"
+            >
               <div className="flex items-center gap-2">
                 <Layers className="w-3.5 h-3.5 text-blue-600" />
-                <span className="font-medium text-slate-800">03_Fieldwork & Testing</span>
+                <span className="font-medium text-slate-800 group-hover:text-blue-700 transition-colors">
+                  03_Fieldwork & Testing
+                </span>
               </div>
-              <span className="text-[10px] font-mono text-blue-700 bg-blue-100/70 px-1.5 py-0.5 rounded">
-                Active (28 docs)
+              <span className="text-[10px] font-mono text-blue-700 bg-blue-100/70 px-1.5 py-0.5 rounded font-semibold">
+                Active (28 docs) →
               </span>
-            </div>
+            </button>
 
-            <div className="p-2 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between opacity-70">
+            <button
+              onClick={() => navigateToScreen('phase-6')}
+              className="w-full p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg flex items-center justify-between text-left transition-colors cursor-pointer group opacity-85"
+              title="Navigate to Phase 6: Drafts & Deliverables"
+            >
               <div className="flex items-center gap-2">
-                <Lock className="w-3.5 h-3.5 text-slate-400" />
-                <span className="font-medium text-slate-600">04_Drafts & Deliverables</span>
+                <Lock className="w-3.5 h-3.5 text-slate-500" />
+                <span className="font-medium text-slate-700 group-hover:text-blue-700 transition-colors">
+                  04_Drafts & Deliverables
+                </span>
               </div>
-              <span className="text-[10px] font-mono text-slate-500 bg-slate-200 px-1.5 py-0.5 rounded">
-                Locked
+              <span className="text-[10px] font-mono text-slate-600 bg-slate-200 px-1.5 py-0.5 rounded">
+                Phase 6 →
               </span>
-            </div>
+            </button>
 
-            <div className="p-2 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between opacity-70">
+            <button
+              onClick={() => navigateToScreen('phase-7')}
+              className="w-full p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg flex items-center justify-between text-left transition-colors cursor-pointer group opacity-85"
+              title="Navigate to Phase 7: Final Signed Archive"
+            >
               <div className="flex items-center gap-2">
-                <Lock className="w-3.5 h-3.5 text-slate-400" />
-                <span className="font-medium text-slate-600">05_Final Signed Archive</span>
+                <Lock className="w-3.5 h-3.5 text-slate-500" />
+                <span className="font-medium text-slate-700 group-hover:text-blue-700 transition-colors">
+                  05_Final Signed Archive
+                </span>
               </div>
-              <span className="text-[10px] font-mono text-slate-500 bg-slate-200 px-1.5 py-0.5 rounded">
-                Locked (Phase 7)
+              <span className="text-[10px] font-mono text-slate-600 bg-slate-200 px-1.5 py-0.5 rounded">
+                Phase 7 →
               </span>
-            </div>
+            </button>
           </div>
         </div>
       </div>
@@ -444,10 +474,10 @@ export function Screen02Planning() {
             {!isApproved ? (
               <button
                 onClick={partnerApproveMateriality}
-                className="px-5 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold flex items-center gap-2 shadow-sm transition-colors"
+                className="px-5 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold flex items-center gap-2 shadow-sm transition-all active:scale-[0.98]"
               >
                 <ShieldCheck className="w-4 h-4" />
-                <span>[Partner Approve Planning & Materiality]</span>
+                <span>Partner Approve Planning & Materiality</span>
               </button>
             ) : (
               <button

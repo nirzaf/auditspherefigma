@@ -22,6 +22,7 @@ import {
   AutomationRule,
   RecurringEngagementPlan,
   ScreenWorkbench,
+  PreviewDocument,
 } from '@/types/audit';
 import {
   INITIAL_ENGAGEMENTS,
@@ -172,6 +173,10 @@ interface AuditStoreContextType {
   toggleAutomationRule: (ruleId: string) => void;
   advanceRecurringPlan: (planId: string) => void;
   navigateToWorkbench: (workbench: ScreenWorkbench) => void;
+  // --- Shared document preview (replaces all dead document links) ---
+  previewDoc: PreviewDocument | null;
+  openDocumentPreview: (doc: PreviewDocument) => void;
+  closeDocumentPreview: () => void;
 }
 
 const AuditStoreContext = createContext<AuditStoreContextType | null>(null);
@@ -206,6 +211,8 @@ export function AuditStoreProvider({ children }: { children: React.ReactNode }) 
   const [automationRules, setAutomationRules] = useState<AutomationRule[]>(AUTOMATION_RULES);
   const [recurringPlans, setRecurringPlans] = useState<RecurringEngagementPlan[]>(INITIAL_RECURRING_PLANS);
   const [activeWorkflowPhase, setActiveWorkflowPhase] = useState<AuditPhaseId | 'all'>('all');
+  // Shared document preview modal state (replaces dead document links)
+  const [previewDoc, setPreviewDoc] = useState<PreviewDocument | null>(null);
 
   // Sync & Loading State
   const [isLoading, setIsLoading] = useState(true);
@@ -1067,6 +1074,15 @@ export function AuditStoreProvider({ children }: { children: React.ReactNode }) 
     );
   };
 
+  // --- Shared document preview (replaces all dead document links) ---
+  const openDocumentPreview = (doc: PreviewDocument) => {
+    setPreviewDoc(doc);
+  };
+
+  const closeDocumentPreview = () => {
+    setPreviewDoc(null);
+  };
+
   return (
     <AuditStoreContext.Provider
       value={{
@@ -1141,6 +1157,9 @@ export function AuditStoreProvider({ children }: { children: React.ReactNode }) 
         toggleAutomationRule,
         advanceRecurringPlan,
         navigateToWorkbench,
+        previewDoc,
+        openDocumentPreview,
+        closeDocumentPreview,
       }}
     >
       {children}

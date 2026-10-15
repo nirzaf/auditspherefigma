@@ -52,10 +52,10 @@ export function Screen07Archive() {
           <div className="flex items-center gap-2">
             <button
               onClick={openExportModal}
-              className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-1.5 transition-colors shadow-sm"
+              className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm active:scale-[0.98]"
             >
               <Download className="w-3.5 h-3.5" />
-              <span>[Generate Complete Inspection Export for Regulators]</span>
+              <span>Generate Complete Inspection Export for Regulators</span>
             </button>
             <button
               onClick={toggleArchiveLock}
@@ -122,10 +122,10 @@ export function Screen07Archive() {
               {!isLocked ? (
                 <button
                   onClick={() => setShowConfirmModal(true)}
-                  className="px-4 py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold flex items-center gap-2 shadow-sm transition-colors"
+                  className="px-4 py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold flex items-center gap-2 shadow-sm transition-all active:scale-[0.98]"
                 >
                   <Lock className="w-3.5 h-3.5 text-amber-400" />
-                  <span>[Execute Authorized Early Archive Lock]</span>
+                  <span>Execute Authorized Early Archive Lock</span>
                 </button>
               ) : (
                 <span className="text-xs font-mono font-bold text-emerald-700 flex items-center gap-1.5">
@@ -147,10 +147,10 @@ export function Screen07Archive() {
             <div className="pt-2">
               <button
                 onClick={openExportModal}
-                className="px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-2 shadow-sm transition-colors"
+                className="px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-2 shadow-sm transition-all active:scale-[0.98]"
               >
                 <Download className="w-3.5 h-3.5" />
-                <span>[Generate Complete Inspection Export for Regulators]</span>
+                <span>Generate Complete Inspection Export for Regulators</span>
               </button>
             </div>
           </div>

@@ -64,10 +64,10 @@ export function Screen09PracticeLedger() {
         <div className="flex items-center gap-3">
           <button
             onClick={openTimesheetModal}
-            className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-colors"
+            className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-all active:scale-[0.98]"
           >
             <PlusCircle className="w-3.5 h-3.5" />
-            <span>[+ Log Billable Hours]</span>
+            <span>+ Log Billable Hours</span>
           </button>
         </div>
       </div>

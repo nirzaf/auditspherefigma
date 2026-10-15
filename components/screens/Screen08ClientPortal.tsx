@@ -20,6 +20,7 @@ export function Screen08ClientPortal() {
     uploadClientDocument,
     openReceiptModal,
     openHoldingLetterModal,
+    openDocumentPreview,
   } = useAuditStore();
 
   const [activeTab, setActiveTab] = useState<'pbc' | 'billing'>('pbc');
@@ -216,15 +217,32 @@ export function Screen08ClientPortal() {
                   </select>
                 </div>
 
-                <div className="border-2 border-dashed border-slate-300 rounded-xl p-5 text-center bg-slate-50/60 hover:bg-slate-50 cursor-pointer">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const req = currentEngagement.clientRequests.find((r) => r.id === selectedRequestId);
+                    const draftName =
+                      mockFileName.trim() || `${currentEngagement.code}_${req?.id || 'PBC'}_Draft.pdf`;
+                    openDocumentPreview({
+                      fileName: draftName,
+                      folder: '02_Trial Balance & Schedules',
+                      fileType: 'PDF',
+                      uploadedBy: 'Client Audit Liaison',
+                      uploadedAt: req?.uploadedAt || req?.deadline || '2027-01-15',
+                      shaHash: '0x9c41f2a77bd310e6622d00391cde554c',
+                      sizeKB: 1840,
+                      description: req ? `${req.title}: ${req.description}` : 'Staged evidence file.',
+                      linkedWorkbench: 'client-portal',
+                    });
+                    if (!mockFileName.trim()) setMockFileName(draftName);
+                  }}
+                  className="w-full border-2 border-dashed border-slate-300 rounded-xl p-5 text-center bg-slate-50/60 hover:bg-slate-50 hover:border-blue-300 transition-colors"
+                  title="Browse or inspect the staged evidence file"
+                >
                   <UploadCloud className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                  <span className="font-semibold text-slate-800 block">
-                    Choose file or drag & drop here
-                  </span>
-                  <span className="text-[10px] text-slate-400 block mt-1">
-                    PDF, Excel (.xlsx), CSV, ZIP (Max 50MB)
-                  </span>
-                </div>
+                  <span className="font-semibold text-slate-800 block">Choose file or drag & drop here</span>
+                  <span className="text-[10px] text-slate-400 block mt-1">PDF, Excel (.xlsx), CSV, ZIP (Max 50MB)</span>
+                </button>
 
                 <div>
                   <label className="block text-[11px] font-semibold text-slate-700 mb-1">

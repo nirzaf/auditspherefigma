@@ -380,6 +380,24 @@ export interface RecurringEngagementPlan {
   status: 'draft' | 'ready' | 'created';
 }
 
+// ---------------------------------------------------------------------------
+// Document preview — shared evidence/document link target.
+// Every clickable document reference (attachment, signed proposal, receipt,
+// report) opens this preview instead of a dead link.
+// ---------------------------------------------------------------------------
+
+export interface PreviewDocument {
+  fileName: string;
+  folder: string; // engagement repository folder, e.g. '03_Fieldwork & Testing'
+  fileType: string; // PDF / XLSX / CSV / DOCX
+  uploadedBy: string;
+  uploadedAt: string;
+  shaHash: string;
+  sizeKB: number;
+  description: string;
+  linkedWorkbench?: ScreenWorkbench;
+}
+
 export interface ToastNotification {
   id: string;
   title: string;

@@ -64,10 +64,10 @@ export function Screen04Review() {
           <div className="shrink-0 flex items-center gap-2">
             <button
               onClick={() => openHoldingLetterModal(criticalPending)}
-              className="px-4 py-2 rounded-lg bg-white text-red-900 hover:bg-red-50 text-xs font-bold flex items-center gap-1.5 transition-colors shadow-sm"
+              className="px-4 py-2 rounded-lg bg-white text-red-900 hover:bg-red-50 text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm active:scale-[0.98]"
             >
               <Send className="w-3.5 h-3.5 text-red-700" />
-              <span>[Auto-Generate Pending Confirmation / Holding Letter]</span>
+              <span>Auto-Generate Pending Confirmation / Holding Letter</span>
             </button>
           </div>
         </div>
@@ -161,10 +161,10 @@ export function Screen04Review() {
             </div>
             <button
               onClick={openReviewNoteModal}
-              className="px-4 py-2 rounded-lg bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-colors"
+              className="px-4 py-2 rounded-lg bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-all active:scale-[0.98]"
             >
               <PlusCircle className="w-3.5 h-3.5" />
-              <span>[+ Initiate Rework Loop / Add Review Note]</span>
+              <span>+ Initiate Rework Loop / Add Review Note</span>
             </button>
           </div>
 

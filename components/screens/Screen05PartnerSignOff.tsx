@@ -311,7 +311,7 @@ export function Screen05PartnerSignOff() {
                 }`}
               >
                 <Stamp className="w-3.5 h-3.5" />
-                <span>{signOff.firmSealAffixed ? 'Seal Affixed' : '[Affix Stamp & Seal]'}</span>
+                <span>{signOff.firmSealAffixed ? 'Seal Affixed' : 'Affix Stamp & Seal'}</span>
               </button>
             </div>
 
@@ -356,7 +356,7 @@ export function Screen05PartnerSignOff() {
                 }`}
               >
                 <FileCheck2 className="w-4 h-4" />
-                <span>[Execute Final Sign-Off & Unlock Reporting]</span>
+                <span>Execute Final Sign-Off & Unlock Reporting</span>
               </button>
             </div>
           </div>

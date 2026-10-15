@@ -68,10 +68,10 @@ export function Screen06Deliverables() {
           {!isDispatched ? (
             <button
               onClick={dispatchDeliverablesToClient}
-              className="px-5 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-2 shadow-sm transition-colors"
+              className="px-5 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-2 shadow-sm transition-all active:scale-[0.98]"
             >
               <Send className="w-4 h-4" />
-              <span>[Dispatch 5-Part Bundle to Client Portal]</span>
+              <span>Dispatch 5-Part Bundle to Client Portal</span>
             </button>
           ) : (
             <button
@@ -353,6 +353,135 @@ export function Screen06Deliverables() {
           </div>
         )}
 
+        {previewDoc === 'card-3' && (
+          <div className="space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
+              <div>
+                <h3 className="text-sm font-bold text-slate-900 font-mono">
+                  MANAGEMENT LETTER OF REPRESENTATION (ISA 580)
+                </h3>
+                <span className="text-xs text-slate-500">
+                  Client Representation to STE Audit & Assurance Partners · Statutory Period Ending {currentEngagement.statutoryYearEnd}
+                </span>
+              </div>
+              <span className="text-xs font-mono font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded border border-blue-200">
+                {del.lorStatus.toUpperCase()}
+              </span>
+            </div>
+
+            <div className="p-5 bg-slate-50 rounded-lg text-xs text-slate-800 space-y-3 font-serif leading-relaxed border border-slate-200">
+              <div className="border-b border-slate-200 pb-3 font-sans not-italic">
+                <div className="text-xs font-bold text-slate-900">{currentEngagement.clientLegalName}</div>
+                <div className="text-[11px] text-slate-500">CR No: 00928194 · West Bay, Doha, State of Qatar</div>
+                <div className="text-[10px] text-slate-400 font-mono mt-1">Date: 15 January 2027</div>
+              </div>
+
+              <p>
+                <strong>To: STE Audit & Assurance Partners, State of Qatar</strong>
+                <br />
+                This representation letter is provided in connection with your audit of the financial statements of{' '}
+                <strong>{currentEngagement.clientLegalName}</strong> for the year ended {currentEngagement.statutoryYearEnd},
+                for the purpose of expressing an opinion as to whether the financial statements present fairly, in all material
+                respects, the financial position and performance in accordance with IFRS.
+              </p>
+
+              <div className="space-y-2 font-sans not-italic text-xs">
+                <div className="p-3 bg-white border border-slate-200 rounded">
+                  <div className="font-bold text-slate-900 font-mono text-[11px]">1. Financial Statements & Completeness</div>
+                  <p className="text-slate-700 mt-1">
+                    We have fulfilled our responsibilities, as set out in the terms of the audit engagement dated 08 January 2026,
+                    for the preparation and fair presentation of the financial statements in accordance with IFRS. All transactions
+                    have been recorded in the accounting records and are reflected in the financial statements.
+                  </p>
+                </div>
+
+                <div className="p-3 bg-white border border-slate-200 rounded">
+                  <div className="font-bold text-slate-900 font-mono text-[11px]">2. Fraud & Compliance with Laws</div>
+                  <p className="text-slate-700 mt-1">
+                    We acknowledge our responsibility for the design, implementation, and maintenance of internal controls to prevent
+                    and detect fraud. We have disclosed to you all information in relation to fraud or suspected fraud that we are aware of.
+                  </p>
+                </div>
+
+                <div className="p-3 bg-white border border-slate-200 rounded">
+                  <div className="font-bold text-slate-900 font-mono text-[11px]">3. Uncorrected Misstatements & Going Concern</div>
+                  <p className="text-slate-700 mt-1">
+                    The effects of uncorrected misstatements are immaterial, both individually and in the aggregate, to the financial
+                    statements as a whole. Management confirms that the Company will continue as a going concern for at least twelve months.
+                  </p>
+                </div>
+              </div>
+
+              <div className="pt-4 border-t border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 font-sans not-italic">
+                <div>
+                  <div className="text-xs font-bold text-slate-900">Dr. Hamad Al-Kuwari</div>
+                  <div className="text-[11px] text-slate-500">Managing Director & CEO</div>
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-slate-900">Reza Pahlavi, CPA</div>
+                  <div className="text-[11px] text-slate-500">Chief Financial Officer</div>
+                </div>
+                <div className="text-right">
+                  <span className="text-[10px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-bold">
+                    SEALED & COUNTERSIGNED
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {previewDoc === 'card-4' && (
+          <div className="space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
+              <div>
+                <h3 className="text-sm font-bold text-slate-900 font-mono">
+                  MANAGEMENT CORRESPONDENCES & CHRONOLOGICAL AUDIT TRAIL (ISA 230)
+                </h3>
+                <span className="text-xs text-slate-500">
+                  Comprehensive audit communications log, third-party circularizations, and resolution stamps.
+                </span>
+              </div>
+              <span className="text-xs font-mono font-bold text-purple-700 bg-purple-50 px-2.5 py-1 rounded border border-purple-200">
+                {currentEngagement.auditTrail.length} RECORDED ENTRIES
+              </span>
+            </div>
+
+            <div className="border border-slate-200 rounded-lg overflow-hidden text-xs">
+              <table className="w-full text-left font-mono">
+                <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 text-[11px]">
+                  <tr>
+                    <th className="py-2.5 px-3">Timestamp</th>
+                    <th className="py-2.5 px-3">Lifecycle Phase</th>
+                    <th className="py-2.5 px-3">Auditor / Author</th>
+                    <th className="py-2.5 px-3 font-sans">Official Action / Inquiry Recorded</th>
+                    <th className="py-2.5 px-3 text-center">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 bg-white">
+                  {currentEngagement.auditTrail.map((item) => (
+                    <tr key={item.id} className="hover:bg-slate-50 transition-colors">
+                      <td className="py-2.5 px-3 text-slate-500 text-[11px] whitespace-nowrap">{item.timestamp}</td>
+                      <td className="py-2.5 px-3">
+                        <span className="text-[10px] bg-slate-100 px-1.5 py-0.5 rounded text-slate-700 font-semibold">
+                          {item.phase}
+                        </span>
+                      </td>
+                      <td className="py-2.5 px-3 font-semibold text-slate-800">{item.performedBy}</td>
+                      <td className="py-2.5 px-3 font-sans text-slate-800 font-medium">{item.action}</td>
+                      <td className="py-2.5 px-3 text-center">
+                        <span className="text-[9px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded">
+                          SEALED
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
         {previewDoc === 'card-5' && (
           <div className="space-y-4">
             <div className="flex justify-between items-center pb-2 border-b border-slate-200">
@@ -363,15 +492,23 @@ export function Screen06Deliverables() {
                 QAR {(currentEngagement.contractedFeeQAR / 2).toLocaleString()}.00
               </span>
             </div>
-            <p className="text-xs text-slate-600">
-              Per commercial agreement terms, the final 50% professional audit fee balance is due upon release of certified financial statements and audit opinion.
-            </p>
-          </div>
-        )}
-
-        {previewDoc !== 'card-1' && previewDoc !== 'card-2' && previewDoc !== 'card-5' && (
-          <div className="p-4 text-xs text-slate-600 font-mono">
-            Full formatted document ready for dispatch to client CFO.
+            <div className="p-4 bg-slate-50 rounded-lg border border-slate-200 space-y-3 text-xs">
+              <div className="flex justify-between items-center font-mono">
+                <span className="text-slate-500">Invoice Number:</span>
+                <span className="font-bold text-slate-900">INV-2026-FINAL-01</span>
+              </div>
+              <div className="flex justify-between items-center font-mono">
+                <span className="text-slate-500">Payment Terms:</span>
+                <span className="font-semibold text-slate-800">30 Days Net from Release Date</span>
+              </div>
+              <div className="flex justify-between items-center font-mono">
+                <span className="text-slate-500">Remittance Bank:</span>
+                <span className="text-blue-700 font-semibold">Qatar National Bank (QNB) — STE Operational Escrow</span>
+              </div>
+              <p className="text-xs text-slate-600 pt-2 border-t border-slate-200">
+                Per commercial agreement terms, the final 50% professional audit fee balance is due upon release of certified financial statements and audit opinion.
+              </p>
+            </div>
           </div>
         )}
       </div>

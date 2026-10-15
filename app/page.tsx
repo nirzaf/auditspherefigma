@@ -23,6 +23,7 @@ import { HoldingLetterModal } from '@/components/modals/HoldingLetterModal';
 import { ReviewNoteModal } from '@/components/modals/ReviewNoteModal';
 import { InspectionExportModal } from '@/components/modals/InspectionExportModal';
 import { TimesheetModal } from '@/components/modals/TimesheetModal';
+import { DocumentPreviewModal } from '@/components/modals/DocumentPreviewModal';
 import { ScreenSkeleton } from '@/components/ui/AuditSkeleton';
 import { ToastContainer } from '@/components/ui/ToastContainer';
 
@@ -83,6 +84,7 @@ function AuditSphereWorkspace() {
       <ReviewNoteModal />
       <InspectionExportModal />
       <TimesheetModal />
+      <DocumentPreviewModal />
 
       {/* Global Toast Notification System */}
       <ToastContainer />

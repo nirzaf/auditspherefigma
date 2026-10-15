@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useAuditStore } from '@/lib/store';
+import { useAuditStore, ScreenView } from '@/lib/store';
 import {
   Compass,
   Layers,
@@ -167,7 +167,7 @@ export function ScreenArchitectureMap() {
             ].map((p) => (
               <div
                 key={p.step}
-                onClick={() => navigateToScreen(p.screen as any)}
+                onClick={() => navigateToScreen(p.screen as ScreenView)}
                 className="p-3 bg-slate-50 rounded-xl border border-slate-200 hover:border-purple-400 hover:bg-purple-50/30 transition-all cursor-pointer flex flex-col justify-between"
               >
                 <div>
@@ -203,75 +203,107 @@ export function ScreenArchitectureMap() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
             {/* Module 1 */}
-            <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm space-y-2">
-              <span className="font-mono text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
-                MODULE 1: COMMERCIAL CRM & DUAL-KEY GATEKEEPER
-              </span>
-              <h3 className="font-bold text-sm text-slate-900">Client Onboarding Terminal</h3>
-              <div className="text-[11px] space-y-1 font-mono text-slate-700 pt-1">
-                <div><strong>Trigger:</strong> Prospect engagement inquiry or annual audit mandate renewal.</div>
-                <div><strong>Inputs:</strong> Client legal entity structure, MOCI CR, proposed audit fee.</div>
-                <div><strong>Processing:</strong> Dual-Key rule evaluation (Commercial Acceptance + AML/ISQC 1 clearance) + 50% advance payment verification.</div>
-                <div><strong>Storage:</strong> Engagement record, signed proposal PDF hash, receipt voucher RV-2026.</div>
-                <div><strong>Integration:</strong> Qatar National Bank payment gateway reference & Ministry AML sanctions list.</div>
-                <div><strong>Outputs:</strong> Signed Engagement Letter & Official Payment Receipt Voucher.</div>
-                <div><strong>Next:</strong> Module 2 (Planning & Provisioning).</div>
-                <div><strong>End State:</strong> Engagement active and eligible for fieldwork planning.</div>
+            <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm space-y-3 flex flex-col justify-between">
+              <div className="space-y-2">
+                <span className="font-mono text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+                  MODULE 1: COMMERCIAL CRM & DUAL-KEY GATEKEEPER
+                </span>
+                <h3 className="font-bold text-sm text-slate-900">Client Onboarding Terminal</h3>
+                <div className="text-[11px] space-y-1 font-mono text-slate-700 pt-1">
+                  <div><strong>Trigger:</strong> Prospect engagement inquiry or annual audit mandate renewal.</div>
+                  <div><strong>Inputs:</strong> Client legal entity structure, MOCI CR, proposed audit fee.</div>
+                  <div><strong>Processing:</strong> Dual-Key rule evaluation (Commercial Acceptance + AML/ISQC 1 clearance) + 50% advance payment verification.</div>
+                  <div><strong>Storage:</strong> Engagement record, signed proposal PDF hash, receipt voucher RV-2026.</div>
+                  <div><strong>Integration:</strong> Qatar National Bank payment gateway reference & Ministry AML sanctions list.</div>
+                  <div><strong>Outputs:</strong> Signed Engagement Letter & Official Payment Receipt Voucher.</div>
+                  <div><strong>End State:</strong> Engagement active and eligible for fieldwork planning.</div>
+                </div>
               </div>
+              <button
+                onClick={() => navigateToScreen('phase-1')}
+                className="mt-2 w-full py-2 px-3 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors border border-blue-200 active:scale-[0.98]"
+              >
+                <span>Open Phase 1: Onboarding Terminal</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
             </div>
 
             {/* Module 2 */}
-            <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm space-y-2">
-              <span className="font-mono text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
-                MODULE 2: PLANNING, PROVISIONING & MATERIALITY ENGINE
-              </span>
-              <h3 className="font-bold text-sm text-slate-900">Audit Planning Workspace</h3>
-              <div className="text-[11px] space-y-1 font-mono text-slate-700 pt-1">
-                <div><strong>Trigger:</strong> 50% advance fee marked as Allocated.</div>
-                <div><strong>Inputs:</strong> Trial balance base benchmarks (Revenue, PBT, Total Assets, Equity).</div>
-                <div><strong>Processing:</strong> Dynamic 3-tier formula calculation (PM, TE, SAD) + manager rounding tolerance clamp (±5%).</div>
-                <div><strong>Storage:</strong> MaterialityConfig, team assignment matrix, 5-folder repository provisioning.</div>
-                <div><strong>Integration:</strong> Trial balance mapper & team timesheet charge-out ledger.</div>
-                <div><strong>Outputs:</strong> Partner-approved Planning Memorandum.</div>
-                <div><strong>Next:</strong> Module 3 (Fieldwork Execution).</div>
-                <div><strong>End State:</strong> Substantive sampling thresholds unlocked.</div>
+            <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm space-y-3 flex flex-col justify-between">
+              <div className="space-y-2">
+                <span className="font-mono text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+                  MODULE 2: PLANNING, PROVISIONING & MATERIALITY ENGINE
+                </span>
+                <h3 className="font-bold text-sm text-slate-900">Audit Planning Workspace</h3>
+                <div className="text-[11px] space-y-1 font-mono text-slate-700 pt-1">
+                  <div><strong>Trigger:</strong> 50% advance fee marked as Allocated.</div>
+                  <div><strong>Inputs:</strong> Trial balance base benchmarks (Revenue, PBT, Total Assets, Equity).</div>
+                  <div><strong>Processing:</strong> Dynamic 3-tier formula calculation (PM, TE, SAD) + manager rounding tolerance clamp (±5%).</div>
+                  <div><strong>Storage:</strong> MaterialityConfig, team assignment matrix, 5-folder repository provisioning.</div>
+                  <div><strong>Integration:</strong> Trial balance mapper & team timesheet charge-out ledger.</div>
+                  <div><strong>Outputs:</strong> Partner-approved Planning Memorandum.</div>
+                  <div><strong>End State:</strong> Substantive sampling thresholds unlocked.</div>
+                </div>
               </div>
+              <button
+                onClick={() => navigateToScreen('phase-2')}
+                className="mt-2 w-full py-2 px-3 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors border border-blue-200 active:scale-[0.98]"
+              >
+                <span>Open Phase 2: Planning Workspace</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
             </div>
 
             {/* Module 3 */}
-            <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm space-y-2">
-              <span className="font-mono text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
-                MODULE 3: FIELDWORK EXECUTION & SPLIT FSLI
-              </span>
-              <h3 className="font-bold text-sm text-slate-900">Substantive Testing & Analytical Review</h3>
-              <div className="text-[11px] space-y-1 font-mono text-slate-700 pt-1">
-                <div><strong>Trigger:</strong> Partner approves planning materiality.</div>
-                <div><strong>Inputs:</strong> General ledger detail, client PBC documents, physical count tags.</div>
-                <div><strong>Processing:</strong> 5 assertions verification (Existence, Valuation, etc.), MUS sampling algorithms, ratio fluctuation analytics.</div>
-                <div><strong>Storage:</strong> FSLI workpapers, sampling outcomes, physical binder coordinates.</div>
-                <div><strong>Integration:</strong> Folder 03_Fieldwork repository and concurrent auditor locks.</div>
-                <div><strong>Outputs:</strong> Completed workpaper submitted for manager review.</div>
-                <div><strong>Next:</strong> Module 4 (Manager Review & SRM).</div>
-                <div><strong>End State:</strong> All high-risk FSLIs tested or flagged for rework.</div>
+            <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm space-y-3 flex flex-col justify-between">
+              <div className="space-y-2">
+                <span className="font-mono text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+                  MODULE 3: FIELDWORK EXECUTION & SPLIT FSLI
+                </span>
+                <h3 className="font-bold text-sm text-slate-900">Substantive Testing & Analytical Review</h3>
+                <div className="text-[11px] space-y-1 font-mono text-slate-700 pt-1">
+                  <div><strong>Trigger:</strong> Partner approves planning materiality.</div>
+                  <div><strong>Inputs:</strong> General ledger detail, client PBC documents, physical count tags.</div>
+                  <div><strong>Processing:</strong> 5 assertions verification (Existence, Valuation, etc.), MUS sampling algorithms, ratio fluctuation analytics.</div>
+                  <div><strong>Storage:</strong> FSLI workpapers, sampling outcomes, physical binder coordinates.</div>
+                  <div><strong>Integration:</strong> Folder 03_Fieldwork repository and concurrent auditor locks.</div>
+                  <div><strong>Outputs:</strong> Completed workpaper submitted for manager review.</div>
+                  <div><strong>End State:</strong> All high-risk FSLIs tested or flagged for rework.</div>
+                </div>
               </div>
+              <button
+                onClick={() => navigateToScreen('phase-3')}
+                className="mt-2 w-full py-2 px-3 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors border border-blue-200 active:scale-[0.98]"
+              >
+                <span>Open Phase 3: Fieldwork Workspace</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
             </div>
 
             {/* Module 4 */}
-            <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm space-y-2">
-              <span className="font-mono text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
-                MODULE 4: REVIEW, OPINION & DELIVERABLES
-              </span>
-              <h3 className="font-bold text-sm text-slate-900">Manager Review & Partner Station</h3>
-              <div className="text-[11px] space-y-1 font-mono text-slate-700 pt-1">
-                <div><strong>Trigger:</strong> Fieldwork submission or review note issuance.</div>
-                <div><strong>Inputs:</strong> Adjusting journal entries, bank circularizations, SRM disclosures.</div>
-                <div><strong>Processing:</strong> Holding letter blocker evaluation + ISA 700/705 opinion justification builder.</div>
-                <div><strong>Storage:</strong> Partner cryptographic signature hash, firm seal, immutable audit trail.</div>
-                <div><strong>Integration:</strong> Isolated Client PBC Portal and 5-part deliverables exporter.</div>
-                <div><strong>Outputs:</strong> 5-Part Deliverables Bundle (Report, ML, LOR, Trail, Final Fee Note).</div>
-                <div><strong>Next:</strong> Module 4 (Compliance Archive Terminal).</div>
-                <div><strong>End State:</strong> Audit report dispatched and file sealed under ISA 230.</div>
+            <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm space-y-3 flex flex-col justify-between">
+              <div className="space-y-2">
+                <span className="font-mono text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+                  MODULE 4: REVIEW, OPINION & DELIVERABLES
+                </span>
+                <h3 className="font-bold text-sm text-slate-900">Manager Review & Partner Station</h3>
+                <div className="text-[11px] space-y-1 font-mono text-slate-700 pt-1">
+                  <div><strong>Trigger:</strong> Fieldwork submission or review note issuance.</div>
+                  <div><strong>Inputs:</strong> Adjusting journal entries, bank circularizations, SRM disclosures.</div>
+                  <div><strong>Processing:</strong> Holding letter blocker evaluation + ISA 700/705 opinion justification builder.</div>
+                  <div><strong>Storage:</strong> Partner cryptographic signature hash, firm seal, immutable audit trail.</div>
+                  <div><strong>Integration:</strong> Isolated Client PBC Portal and 5-part deliverables exporter.</div>
+                  <div><strong>Outputs:</strong> 5-Part Deliverables Bundle (Report, ML, LOR, Trail, Final Fee Note).</div>
+                  <div><strong>End State:</strong> Audit report dispatched and file sealed under ISA 230.</div>
+                </div>
               </div>
+              <button
+                onClick={() => navigateToScreen('phase-4')}
+                className="mt-2 w-full py-2 px-3 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors border border-blue-200 active:scale-[0.98]"
+              >
+                <span>Open Phase 4: Manager Review & Rework</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
             </div>
           </div>
         </div>
@@ -300,31 +332,43 @@ export function ScreenArchitectureMap() {
                 <th className="py-2.5 px-3">Module</th>
                 <th className="py-2.5 px-3">Workflow State</th>
                 <th className="py-2.5 px-3 text-center font-sans">Status</th>
+                <th className="py-2.5 px-3 text-right font-sans">Workbench</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {[
-                { id: 'REQ-01', name: 'Dual-Key Gatekeeper (Commercial Acceptance + AML/KYC Clearance)', mod: 'Module 1', state: 'Key 1 & Key 2 Validation', status: 'Implemented' },
-                { id: 'REQ-02', name: '50% Advance Invoicing & Receipt Voucher RV generation', mod: 'Module 1', state: 'Advance Fee Allocation Gate', status: 'Implemented' },
-                { id: 'REQ-03', name: 'Dynamic 3-Tier Materiality (PM, TE, SAD) with ±5% Manager Rounding', mod: 'Module 2', state: 'ISA 320 Planning Calculator', status: 'Implemented' },
-                { id: 'REQ-04', name: 'Split Viewport Financial Statements (P&L Upper / BS Lower)', mod: 'Module 3', state: 'Split FSLI Workspace', status: 'Implemented' },
-                { id: 'REQ-05', name: 'Substantive Testing Drawer (Assertions, MUS Sampling, Binder Refs)', mod: 'Module 3', state: 'Substantive Execution', status: 'Implemented' },
-                { id: 'REQ-06', name: 'Manager Review Notes & Rework Loop Status Switching', mod: 'Module 4', state: 'Inline Rework Loop', status: 'Implemented' },
-                { id: 'REQ-07', name: 'Holding Letter Hard Blocker for Overdue Bank Confirmations', mod: 'Module 4', state: 'ISA 505 Circularization Gate', status: 'Implemented' },
-                { id: 'REQ-08', name: 'ISA 700 / 705 Partner Opinion Selector with Dynamic Justification', mod: 'Module 4', state: 'Partner Opinion Station', status: 'Implemented' },
-                { id: 'REQ-09', name: 'Mandatory 5-Part Deliverables Bundle Assembly & Client Release', mod: 'Module 4', state: 'Deliverables Dispatch', status: 'Implemented' },
-                { id: 'REQ-10', name: '60-Day ISA 230 Regulatory Archive Countdown & Early Lock', mod: 'Module 4', state: 'Compliance Archiving', status: 'Implemented' },
-                { id: 'REQ-11', name: 'Client-Facing Isolated PBC Portal with Rejection Reason Callout', mod: 'Screen 08', state: 'PBC Document Collaboration', status: 'Implemented' },
-                { id: 'REQ-12', name: 'Practice Management: Tiered Charge-Out Rates & Profitability Meter', mod: 'Module 5', state: 'Timesheet & Operational Ledger', status: 'Implemented' },
+                { id: 'REQ-01', name: 'Dual-Key Gatekeeper (Commercial Acceptance + AML/KYC Clearance)', mod: 'Module 1', state: 'Key 1 & Key 2 Validation', status: 'Implemented', screen: 'phase-1' as ScreenView },
+                { id: 'REQ-02', name: '50% Advance Invoicing & Receipt Voucher RV generation', mod: 'Module 1', state: 'Advance Fee Allocation Gate', status: 'Implemented', screen: 'phase-1' as ScreenView },
+                { id: 'REQ-03', name: 'Dynamic 3-Tier Materiality (PM, TE, SAD) with ±5% Manager Rounding', mod: 'Module 2', state: 'ISA 320 Planning Calculator', status: 'Implemented', screen: 'phase-2' as ScreenView },
+                { id: 'REQ-04', name: 'Split Viewport Financial Statements (P&L Upper / BS Lower)', mod: 'Module 3', state: 'Split FSLI Workspace', status: 'Implemented', screen: 'phase-3' as ScreenView },
+                { id: 'REQ-05', name: 'Substantive Testing Drawer (Assertions, MUS Sampling, Binder Refs)', mod: 'Module 3', state: 'Substantive Execution', status: 'Implemented', screen: 'phase-3' as ScreenView },
+                { id: 'REQ-06', name: 'Manager Review Notes & Rework Loop Status Switching', mod: 'Module 4', state: 'Inline Rework Loop', status: 'Implemented', screen: 'phase-4' as ScreenView },
+                { id: 'REQ-07', name: 'Holding Letter Hard Blocker for Overdue Bank Confirmations', mod: 'Module 4', state: 'ISA 505 Circularization Gate', status: 'Implemented', screen: 'phase-4' as ScreenView },
+                { id: 'REQ-08', name: 'ISA 700 / 705 Partner Opinion Selector with Dynamic Justification', mod: 'Module 4', state: 'Partner Opinion Station', status: 'Implemented', screen: 'phase-5' as ScreenView },
+                { id: 'REQ-09', name: 'Mandatory 5-Part Deliverables Bundle Assembly & Client Release', mod: 'Module 4', state: 'Deliverables Dispatch', status: 'Implemented', screen: 'phase-6' as ScreenView },
+                { id: 'REQ-10', name: '60-Day ISA 230 Regulatory Archive Countdown & Early Lock', mod: 'Module 4', state: 'Compliance Archiving', status: 'Implemented', screen: 'phase-7' as ScreenView },
+                { id: 'REQ-11', name: 'Client-Facing Isolated PBC Portal with Rejection Reason Callout', mod: 'Screen 08', state: 'PBC Document Collaboration', status: 'Implemented', screen: 'client-portal' as ScreenView },
+                { id: 'REQ-12', name: 'Practice Management: Tiered Charge-Out Rates & Profitability Meter', mod: 'Module 5', state: 'Timesheet & Operational Ledger', status: 'Implemented', screen: 'practice-ledger' as ScreenView },
               ].map((r) => (
-                <tr key={r.id} className="hover:bg-slate-50 transition-colors">
-                  <td className="py-2.5 px-3 font-bold text-slate-900">{r.id}</td>
-                  <td className="py-2.5 px-3 font-sans text-slate-800 font-medium">{r.name}</td>
+                <tr
+                  key={r.id}
+                  onClick={() => navigateToScreen(r.screen)}
+                  className="hover:bg-blue-50/50 transition-colors cursor-pointer group"
+                  title={`Open workbench for ${r.name}`}
+                >
+                  <td className="py-2.5 px-3 font-bold text-slate-900 group-hover:text-blue-600 transition-colors">{r.id}</td>
+                  <td className="py-2.5 px-3 font-sans text-slate-800 font-medium group-hover:text-slate-900">{r.name}</td>
                   <td className="py-2.5 px-3 text-blue-700">{r.mod}</td>
                   <td className="py-2.5 px-3 text-slate-600">{r.state}</td>
                   <td className="py-2.5 px-3 text-center font-sans">
                     <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded font-mono">
                       {r.status}
+                    </span>
+                  </td>
+                  <td className="py-2.5 px-3 text-right font-sans">
+                    <span className="text-[11px] font-semibold text-blue-600 group-hover:underline flex items-center justify-end gap-1">
+                      <span>Open</span>
+                      <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
                     </span>
                   </td>
                 </tr>

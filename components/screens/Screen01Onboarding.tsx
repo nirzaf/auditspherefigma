@@ -20,7 +20,9 @@ export function Screen01Onboarding() {
     togglePartnerKYC,
     allocateAdvancePayment,
     openReceiptModal,
+    openDocumentPreview,
     navigateToScreen,
+    addToast,
   } = useAuditStore();
 
   const [paymentRefInput, setPaymentRefInput] = useState(
@@ -183,10 +185,26 @@ export function Screen01Onboarding() {
               {currentEngagement.commercialKey.attachmentName && (
                 <div className="flex items-center justify-between pt-1">
                   <span className="text-slate-500">Signed Document:</span>
-                  <span className="text-blue-600 font-medium flex items-center gap-1 hover:underline cursor-pointer">
+                  <button
+                    onClick={() =>
+                      openDocumentPreview({
+                        fileName: currentEngagement.commercialKey.attachmentName,
+                        folder: '01_Administration & Planning',
+                        fileType: 'PDF',
+                        uploadedBy: currentEngagement.commercialKey.authorizedSignatory,
+                        uploadedAt: currentEngagement.commercialKey.acceptedAt,
+                        shaHash: '0x6e1208a5f4c09d3bda27ce25bb18e2db',
+                        sizeKB: 940,
+                        description: `Client-signed commercial acceptance of quotation ${currentEngagement.proposalRev} (QAR ${currentEngagement.commercialKey.acceptedFeeQAR.toLocaleString()}).`,
+                        linkedWorkbench: 'onboarding',
+                      })
+                    }
+                    className="text-blue-600 font-medium flex items-center gap-1 hover:underline"
+                    title="Inspect the signed acceptance evidence"
+                  >
                     <ExternalLink className="w-3 h-3" />
                     {currentEngagement.commercialKey.attachmentName}
-                  </span>
+                  </button>
                 </div>
               )}
             </div>
@@ -343,10 +361,29 @@ export function Screen01Onboarding() {
 
           <div className="shrink-0 flex items-center gap-2">
             <button
+              onClick={() => {
+                if (!dualKeyCleared) return;
+                addToast(
+                  'Engagement Letter Executed',
+                  `Statutory Engagement Letter EL-${currentEngagement.statutoryYearEnd}-QA-DOHA sealed with partner cryptographic hash.`,
+                  'success'
+                );
+                openDocumentPreview({
+                  fileName: `EL-${currentEngagement.statutoryYearEnd}-QA-DOHA_Executed.pdf`,
+                  folder: '01_Administration & Planning',
+                  fileType: 'PDF',
+                  uploadedBy: currentEngagement.partnerKyc.partnerName,
+                  uploadedAt: '2027-01-08 09:30 AST',
+                  shaHash: '0x9e1208a5f4c09d3bda27ce25bb18e2db88192a00cfa882910488921bba8821',
+                  sizeKB: 1420,
+                  description: `Executed Statutory Audit Engagement Letter (ISA 210) for ${currentEngagement.clientLegalName} complying with Qatar MOCI & QFMA standards. Fee: QAR ${currentEngagement.contractedFeeQAR.toLocaleString()}.`,
+                  linkedWorkbench: 'onboarding',
+                });
+              }}
               disabled={!dualKeyCleared}
-              className={`px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition-all ${
+              className={`px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition-all active:scale-[0.98] ${
                 dualKeyCleared
-                  ? 'bg-emerald-700 hover:bg-emerald-800 text-white shadow-sm'
+                  ? 'bg-emerald-700 hover:bg-emerald-800 text-white shadow-sm cursor-pointer'
                   : 'bg-slate-300 text-slate-500 cursor-not-allowed'
               }`}
             >
@@ -465,7 +502,7 @@ export function Screen01Onboarding() {
               }`}
             >
               <Receipt className="w-3.5 h-3.5" />
-              <span>[Generate Official Payment Receipt Voucher]</span>
+              <span>Generate Official Payment Receipt Voucher</span>
             </button>
 
             <button

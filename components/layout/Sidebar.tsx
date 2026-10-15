@@ -25,22 +25,24 @@ export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const [foldersOpen, setFoldersOpen] = useState(true);
 
-  // Folder counts for directory
-  const folders = [
-    { code: '01', name: '01_Administration & Planning', status: 'Ready', files: 4 },
-    { code: '02', name: '02_Trial Balance & Schedules', status: 'Ingested', files: 12 },
-    { code: '03', name: '03_Fieldwork & Testing', status: 'Active', files: 28 },
+  // Folder counts for directory with workbench screen links
+  const folders: { code: string; name: string; status: string; files: number; screen: ScreenView }[] = [
+    { code: '01', name: '01_Administration & Planning', status: 'Ready', files: 4, screen: 'phase-1' },
+    { code: '02', name: '02_Trial Balance & Schedules', status: 'Ingested', files: 12, screen: 'phase-2' },
+    { code: '03', name: '03_Fieldwork & Testing', status: 'Active', files: 28, screen: 'phase-3' },
     {
       code: '04',
       name: '04_Drafts & Deliverables',
       status: currentEngagement.currentPhase >= 6 ? 'Unlocked' : 'Locked',
       files: currentEngagement.currentPhase >= 6 ? 5 : 0,
+      screen: 'phase-6',
     },
     {
       code: '05',
       name: '05_Final Signed Archive',
       status: currentEngagement.isPermanentlyArchived ? 'Sealed' : 'Pending',
       files: currentEngagement.isPermanentlyArchived ? 7 : 0,
+      screen: 'phase-7',
     },
   ];
 
@@ -212,17 +214,34 @@ export function Sidebar() {
 
             {foldersOpen && (
               <div className="space-y-1 pl-1">
-                {folders.map((f) => (
-                  <div
-                    key={f.code}
-                    className="flex items-center justify-between p-1.5 rounded text-[11px] text-slate-300 hover:bg-slate-800 transition-colors"
-                  >
-                    <span className="truncate pr-1">{f.name}</span>
-                    <span className="text-[10px] font-mono text-slate-400 shrink-0">
-                      {f.files} docs
-                    </span>
-                  </div>
-                ))}
+                {folders.map((f) => {
+                  const isCurrent = currentScreen === f.screen;
+                  return (
+                    <button
+                      key={f.code}
+                      onClick={() => navigateToScreen(f.screen)}
+                      className={`w-full flex items-center justify-between p-2 rounded-lg text-[11px] transition-all text-left group ${
+                        isCurrent
+                          ? 'bg-blue-600 text-white shadow-sm'
+                          : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                      }`}
+                      title={`Open ${f.name} in Phase Workbench`}
+                    >
+                      <span className="truncate pr-1 group-hover:translate-x-0.5 transition-transform">
+                        {f.name}
+                      </span>
+                      <span
+                        className={`text-[10px] font-mono shrink-0 px-1.5 py-0.5 rounded ${
+                          isCurrent
+                            ? 'bg-blue-700 text-white font-semibold'
+                            : 'bg-slate-800 text-slate-400 group-hover:text-slate-200'
+                        }`}
+                      >
+                        {f.files} docs
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
             )}
           </div>
