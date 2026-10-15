@@ -1,0 +1,6 @@
+{
+  "name": "AuditSphere | STE Audit Management Platform v2.2",
+  "description": "Enterprise audit management workstation complying with International Standards on Auditing (ISA) & IFRS in Qatari Riyal (QAR). 7-phase audit workflow, split P&L / Balance Sheet fieldwork, dual-key gatekeeper, materiality engine, review notes, and ISA 230 compliance archive.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
